@@ -97,8 +97,10 @@ class MathFunctionAnalysis:
         monotone_intervals = []
         for interval in domain_intervals:
             test_point = (interval.start + interval.end) / 2
-            if derivative.subs(variable, test_point) > 0:
-                monotone_intervals.append(interval)
+            if test_point.is_real:
+                test_value = derivative.subs(variable, test_point)
+                if test_value.is_real and test_value > 0:
+                    monotone_intervals.append(interval)
         return monotone_intervals
 
     def _get_domain_intervals(self, critical_points):
