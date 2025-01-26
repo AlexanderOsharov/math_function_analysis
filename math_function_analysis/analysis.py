@@ -65,8 +65,8 @@ class MathFunctionAnalysis:
     def _analyze_first_derivative(self):
         first_derivative = sp.diff(self.function, self.x)
         critical_points = sp.solve(first_derivative, self.x)
-        increasing_intervals = sp.calculus.util.function_monotone_intervals(first_derivative, self.x, relational=False)
-        decreasing_intervals = sp.calculus.util.function_monotone_intervals(-first_derivative, self.x, relational=False)
+        increasing_intervals = self._find_monotone_intervals(first_derivative, self.x)
+        decreasing_intervals = self._find_monotone_intervals(-first_derivative, self.x)
         extrema_values = {point: self.function.subs(self.x, point) for point in critical_points}
         return {
             'derivative': first_derivative,
@@ -79,8 +79,8 @@ class MathFunctionAnalysis:
     def _analyze_second_derivative(self):
         second_derivative = sp.diff(self.function, self.x, 2)
         inflection_points = sp.solve(second_derivative, self.x)
-        concave_up_intervals = sp.calculus.util.function_monotone_intervals(second_derivative, self.x, relational=False)
-        concave_down_intervals = sp.calculus.util.function_monotone_intervals(-second_derivative, self.x, relational=False)
+        concave_up_intervals = self._find_monotone_intervals(second_derivative, self.x)
+        concave_down_intervals = self._find_monotone_intervals(-second_derivative, self.x)
         inflection_values = {point: self.function.subs(self.x, point) for point in inflection_points}
         return {
             'derivative': second_derivative,
@@ -89,6 +89,37 @@ class MathFunctionAnalysis:
             'concave_down_intervals': concave_down_intervals,
             'inflection_values': inflection_values
         }
+
+    def _find_monotone_intervals(self, derivative, variable):
+        critical_points = sp.solve(derivative, variable)
+        critical_points = sorted([cp.evalf() for cp in critical_points if cp.is_real])
+        domain_intervals = self._get_domain_intervals(critical_points)
+        monotone_intervals = []
+        for interval in domain_intervals:
+            test_point = (interval.start + interval.end) / 2
+            if derivative.subs(variable, test_point) > 0:
+                monotone_intervals.append(interval)
+        return monotone_intervals
+
+    def _get_domain_intervals(self, critical_points):
+        domain = self.domain
+        intervals = []
+        if isinstance(domain, sp.Union):
+            for subdomain in domain.args:
+                intervals.extend(self._get_intervals(subdomain, critical_points))
+        else:
+            intervals.extend(self._get_intervals(domain, critical_points))
+        return intervals
+
+    def _get_intervals(self, domain, critical_points):
+        intervals = []
+        start = domain.start
+        for cp in critical_points:
+            if start < cp < domain.end:
+                intervals.append(sp.Interval(start, cp, left_open=True, right_open=True))
+                start = cp
+        intervals.append(sp.Interval(start, domain.end, left_open=start == domain.start, right_open=domain.end == sp.oo))
+        return intervals
 
     def plot(self):
         f = sp.lambdify(self.x, self.function, 'numpy')
