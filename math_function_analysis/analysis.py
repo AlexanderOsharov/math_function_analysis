@@ -184,13 +184,13 @@ class MathFunctionAnalysis:
             f"{self._translate('Critical Points')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['critical_points']))}, "
             f"{self._translate('Increasing Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['increasing_intervals']))}, "
             f"{self._translate('Decreasing Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['decreasing_intervals']))}, "
-            f"{self._translate('Extrema Values')}: {', '.join(map(lambda x: f'${sp.latex(x)}$: ${sp.latex(self.first_derivative_analysis['extrema_values'][x])}$', self.first_derivative_analysis['extrema_values']))}"))
+            f"{self._translate('Extrema Values')}: {', '.join(map(lambda x: f'$' + sp.latex(x) + '$: $' + sp.latex(self.first_derivative_analysis['extrema_values'][x]) + '$', self.first_derivative_analysis['extrema_values']))}"))
         display(Latex(
             f"\\textbf{{{self._translate('Second Derivative Analysis')}}}: {self._translate('Derivative')}: {sp.latex(self.second_derivative_analysis['derivative'])}, "
             f"{self._translate('Inflection Points')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['inflection_points']))}, "
             f"{self._translate('Concave Up Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['concave_up_intervals']))}, "
             f"{self._translate('Concave Down Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['concave_down_intervals']))}, "
-            f"{self._translate('Inflection Values')}: {', '.join(map(lambda x: f'${sp.latex(x)}$: ${sp.latex(self.second_derivative_analysis['inflection_values'][x])}$', self.second_derivative_analysis['inflection_values']))}"))
+            f"{self._translate('Inflection Values')}: {', '.join(map(lambda x: f'$' + sp.latex(x) + '$: $' + sp.latex(self.second_derivative_analysis['inflection_values'][x]) + '$', self.second_derivative_analysis['inflection_values']))}"))
 
     def step_by_step_analysis(self):
         steps = [
