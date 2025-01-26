@@ -199,13 +199,13 @@ class MathFunctionAnalysis:
             f"\\quad {self._translate('Critical Points')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['critical_points']))}",
             f"\\quad {self._translate('Increasing Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['increasing_intervals']))}",
             f"\\quad {self._translate('Decreasing Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['decreasing_intervals']))}",
-            f"\\quad {self._translate('Extrema Values')}: {', '.join(map(lambda x: f'${sp.latex(x)}$: ${sp.latex(self.first_derivative_analysis['extrema_values'][x])}$', self.first_derivative_analysis['extrema_values']))}",
+            f"\\quad {self._translate('Extrema Values')}: {', '.join(map(lambda x: f'${sp.latex(x)}$: ${sp.latex(self.first_derivative_analysis["extrema_values"][x])}$', self.first_derivative_analysis['extrema_values']))}",
             f"\\textbf{{{self._translate('Second Derivative Analysis')}}}:",
             f"\\quad {self._translate('Derivative')}: {sp.latex(self.second_derivative_analysis['derivative'])}",
             f"\\quad {self._translate('Inflection Points')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['inflection_points']))}",
             f"\\quad {self._translate('Concave Up Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['concave_up_intervals']))}",
             f"\\quad {self._translate('Concave Down Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['concave_down_intervals']))}",
-            f"\\quad {self._translate('Inflection Values')}: {', '.join(map(lambda x: f'${sp.latex(x)}$: ${sp.latex(self.second_derivative_analysis['inflection_values'][x])}$', self.second_derivative_analysis['inflection_values']))}"
+            f"\\quad {self._translate('Inflection Values')}: {', '.join(map(lambda x: f'${sp.latex(x)}$: ${sp.latex(self.second_derivative_analysis["inflection_values"][x])}$', self.second_derivative_analysis['inflection_values']))}"
         ]
         for step in steps:
             display(Latex(step))
