@@ -174,19 +174,23 @@ class MathFunctionAnalysis:
 
     def display_report(self):
         display(Latex(f"\\textbf{{{self._translate('Domain')}}}: {sp.latex(self.domain)}"))
-        display(Latex(f"\\textbf{{{self._translate('Intercepts')}}}: X: {', '.join(map(lambda x: sp.latex(x), self.intercepts['x']))}, Y: {sp.latex(self.intercepts['y'])}"))
-        display(Latex(f"\\textbf{{{self._translate('Asymptotes')}}}: {self._translate('Vertical')}: {', '.join(map(lambda x: sp.latex(x), self.asymptotes['vertical']))}, "
-                      f"{self._translate('Horizontal')}: {', '.join(map(lambda x: sp.latex(x), self.asymptotes['horizontal']))}, {self._translate('Oblique')}: {sp.latex(self.asymptotes['oblique'])}"))
-        display(Latex(f"\\textbf{{{self._translate('First Derivative Analysis')}}}: {self._translate('Derivative')}: {sp.latex(self.first_derivative_analysis['derivative'])}, "
-                      f"{self._translate('Critical Points')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['critical_points']))}, "
-                      f"{self._translate('Increasing Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['increasing_intervals']))}, "
-                      f"{self._translate('Decreasing Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['decreasing_intervals']))}, "
-                      f"{self._translate('Extrema Values')}: {', '.join(map(lambda x: f'${sp.latex(x)}$: ${sp.latex(self.first_derivative_analysis['extrema_values'][x])}$', self.first_derivative_analysis['extrema_values']))}"))
-        display(Latex(f"\\textbf{{{self._translate('Second Derivative Analysis')}}}: {self._translate('Derivative')}: {sp.latex(self.second_derivative_analysis['derivative'])}, "
-                      f"{self._translate('Inflection Points')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['inflection_points']))}, "
-                      f"{self._translate('Concave Up Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['concave_up_intervals']))}, "
-                      f"{self._translate('Concave Down Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['concave_down_intervals']))}, "
-                      f"{self._translate('Inflection Values')}: {', '.join(map(lambda x: f'${sp.latex(x)}$: ${sp.latex(self.second_derivative_analysis['inflection_values'][x])}$', self.second_derivative_analysis['inflection_values']))}"))
+        display(Latex(
+            f"\\textbf{{{self._translate('Intercepts')}}}: X: {', '.join(map(lambda x: sp.latex(x), self.intercepts['x']))}, Y: {sp.latex(self.intercepts['y'])}"))
+        display(Latex(
+            f"\\textbf{{{self._translate('Asymptotes')}}}: {self._translate('Vertical')}: {', '.join(map(lambda x: sp.latex(x), self.asymptotes['vertical']))}, "
+            f"{self._translate('Horizontal')}: {', '.join(map(lambda x: sp.latex(x), self.asymptotes['horizontal']))}, {self._translate('Oblique')}: {sp.latex(self.asymptotes['oblique'])}"))
+        display(Latex(
+            f"\\textbf{{{self._translate('First Derivative Analysis')}}}: {self._translate('Derivative')}: {sp.latex(self.first_derivative_analysis['derivative'])}, "
+            f"{self._translate('Critical Points')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['critical_points']))}, "
+            f"{self._translate('Increasing Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['increasing_intervals']))}, "
+            f"{self._translate('Decreasing Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.first_derivative_analysis['decreasing_intervals']))}, "
+            f"{self._translate('Extrema Values')}: {', '.join(map(lambda x: '${}$: ${}$'.format(sp.latex(x), sp.latex(self.first_derivative_analysis['extrema_values'][x])), self.first_derivative_analysis['extrema_values']))}"))
+        display(Latex(
+            f"\\textbf{{{self._translate('Second Derivative Analysis')}}}: {self._translate('Derivative')}: {sp.latex(self.second_derivative_analysis['derivative'])}, "
+            f"{self._translate('Inflection Points')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['inflection_points']))}, "
+            f"{self._translate('Concave Up Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['concave_up_intervals']))}, "
+            f"{self._translate('Concave Down Intervals')}: {', '.join(map(lambda x: sp.latex(x), self.second_derivative_analysis['concave_down_intervals']))}, "
+            f"{self._translate('Inflection Values')}: {', '.join(map(lambda x: '${}$: ${}$'.format(sp.latex(x), sp.latex(self.second_derivative_analysis['inflection_values'][x])), self.second_derivative_analysis['inflection_values']))}"))
 
     def step_by_step_analysis(self):
         steps = [
