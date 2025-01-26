@@ -21,7 +21,8 @@ class TestMathFunctionAnalysis(unittest.TestCase):
 
     def test_first_derivative_analysis(self):
         expected_derivative = -2/(x**3 - x**2) + 2/(x**3 + x**2)
-        self.assertEqual(self.analysis.first_derivative_analysis['derivative'], expected_derivative)
+        simplified_expected_derivative = sp.simplify(expected_derivative)
+        self.assertEqual(self.analysis.first_derivative_analysis['derivative'], simplified_expected_derivative)
         self.assertEqual(self.analysis.first_derivative_analysis['critical_points'], [])
         expected_increasing_intervals = [sp.Interval.open(-sp.oo, -1), sp.Interval.open(1, sp.oo)]
         self.assertEqual(self.analysis.first_derivative_analysis['increasing_intervals'], expected_increasing_intervals)
@@ -30,7 +31,8 @@ class TestMathFunctionAnalysis(unittest.TestCase):
 
     def test_second_derivative_analysis(self):
         expected_derivative = 6/(x**4 - 2*x**2 + 1) - 6/(x**4 + 2*x**2 + 1)
-        self.assertEqual(self.analysis.second_derivative_analysis['derivative'], expected_derivative)
+        simplified_expected_derivative = sp.simplify(expected_derivative)
+        self.assertEqual(self.analysis.second_derivative_analysis['derivative'], simplified_expected_derivative)
         expected_inflection_points = [-sp.sqrt(2)/2, sp.sqrt(2)/2]
         self.assertEqual(self.analysis.second_derivative_analysis['inflection_points'], expected_inflection_points)
         expected_concave_up_intervals = [sp.Interval.open(-sp.sqrt(2)/2, 0), sp.Interval.open(sp.sqrt(2)/2, sp.oo)]
