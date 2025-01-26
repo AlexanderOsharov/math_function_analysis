@@ -25,14 +25,42 @@ class MathFunctionAnalysis:
         return {'x': x_intercepts, 'y': y_intercept}
 
     def _find_asymptotes(self):
-        vertical_asymptotes = sp.calculus.util.vertical_asymptotes(self.function, self.x)
-        horizontal_asymptotes = (sp.limit(self.function, self.x, sp.oo), sp.limit(self.function, self.x, -sp.oo))
-        oblique_asymptotes = sp.apl.uplimits.oblique(self.function, self.x)
+        vertical_asymptotes = self._find_vertical_asymptotes()
+        horizontal_asymptotes = self._find_horizontal_asymptotes()
+        oblique_asymptotes = self._find_oblique_asymptotes()
         return {
             'vertical': vertical_asymptotes,
             'horizontal': horizontal_asymptotes,
             'oblique': oblique_asymptotes
         }
+
+    def _find_vertical_asymptotes(self):
+        try:
+            denom = sp.denom(self.function)
+            vertical_asymptotes = sp.solve(denom, self.x)
+        except Exception as e:
+            vertical_asymptotes = f"Error finding vertical asymptotes: {e}"
+        return vertical_asymptotes
+
+    def _find_horizontal_asymptotes(self):
+        try:
+            limit_pos_inf = sp.limit(self.function, self.x, sp.oo)
+            limit_neg_inf = sp.limit(self.function, self.x, -sp.oo)
+        except Exception as e:
+            limit_pos_inf = f"Error finding horizontal asymptote at +∞: {e}"
+            limit_neg_inf = f"Error finding horizontal asymptote at -∞: {e}"
+        return (limit_pos_inf, limit_neg_inf)
+
+    def _find_oblique_asymptotes(self):
+        try:
+            degree_num = sp.degree(sp.numer(self.function))
+            degree_den = sp.degree(sp.denom(self.function))
+            if degree_num > degree_den:
+                quotient, remainder = sp.div(sp.numer(self.function), sp.denom(self.function))
+                return quotient
+        except Exception as e:
+            return f"Error finding oblique asymptote: {e}"
+        return None
 
     def _analyze_first_derivative(self):
         first_derivative = sp.diff(self.function, self.x)
@@ -75,6 +103,19 @@ class MathFunctionAnalysis:
             plt.scatter([0], [self.intercepts['y']], color='red', label='Y-intercept')
         for intercept in self.intercepts['x']:
             plt.scatter([intercept], [0], color='green', label='X-intercept' if self.intercepts['y'] == 0 else '')
+
+        for va in self.asymptotes['vertical']:
+            plt.axvline(va, color='purple', linestyle='--', label=f'Vertical Asymptote at x={va}')
+
+        if self.asymptotes['horizontal'][0] != sp.oo and self.asymptotes['horizontal'][0] != -sp.oo:
+            plt.axhline(self.asymptotes['horizontal'][0], color='orange', linestyle='--', label=f'Horizontal Asymptote at y={self.asymptotes["horizontal"][0]}')
+        if self.asymptotes['horizontal'][1] != sp.oo and self.asymptotes['horizontal'][1] != -sp.oo:
+            plt.axhline(self.asymptotes['horizontal'][1], color='orange', linestyle='--', label=f'Horizontal Asymptote at y={self.asymptotes["horizontal"][1]}')
+
+        if self.asymptotes['oblique']:
+            oblique_func = sp.lambdify(self.x, self.asymptotes['oblique'], 'numpy')
+            y_oblique = [oblique_func(val) for val in x_vals]
+            plt.plot(x_vals, y_oblique, color='brown', linestyle='--', label=f'Oblique Asymptote')
 
         plt.axhline(0, color='black', linewidth=0.8)
         plt.axvline(0, color='black', linewidth=0.8)
